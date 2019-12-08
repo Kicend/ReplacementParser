@@ -7,6 +7,17 @@ characters_dict = {
     "ń": "ñ"
 }
 
+unused_words = ("<tr>",
+                "</>",
+                "tr",
+                "td",
+                "nobr",
+                "lekcja",
+                "opis",
+                "zastępca",
+                "uwagi",
+                "class")
+
 
 def repair_line(line):
     keys = list(characters_dict.keys())
@@ -25,5 +36,11 @@ def file_converter(path_to_file):
         for line in file:
             new_file.append(repair_line(line))
 
-    with open("{}_utf-8.txt".format(path_to_file), "a") as f:
-        f.writelines(new_file)
+    with open("{}_utf-8.txt".format(path_to_file), "w") as f:
+        for line in new_file:
+            for number, word in enumerate(unused_words):
+                if line.count(word):
+                    break
+                else:
+                    if number == 9:
+                        f.writelines(line)
