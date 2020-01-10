@@ -36,14 +36,20 @@ class_list = ("1pla",
               "4tm2",
               "4tm3")
 
-headers = {"user_agent": "macOS 10.15 Catalina"}
-page = r.get("http://zastepstwa.staff.edu.pl/", headers=headers)
-soup = BeautifulSoup(page.text, "lxml")
-links = soup.find_all("tr")
-os.makedirs("parser_files", exist_ok=True)
-with open("parser_files/file.txt", "w") as f:
-    for link in links:
-        f.writelines(str(link))
+headers = {"user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) "
+                         "Version/9.0.2 Safari/601.3.9"}
 
-file_converter("parser_files/file")  # Wczytanie zawartości pliku po parsowaniu, i zapisanie go do innego pliku po konwersji
+if __name__ == "__main__":
+    page = r.get("http://zastepstwa.staff.edu.pl/", headers=headers)
+    soup = BeautifulSoup(page.text, "lxml")
+    links = soup.find_all("tr")
+    os.makedirs("parser_files", exist_ok=True)
+    with open("parser_files/file.txt", "w") as f:
+        for link in links:
+            f.writelines(str(link))
 
+    # Wczytanie zawartości pliku po parsowaniu, i zapisanie go do innego pliku po konwersji
+    file_converter("parser_files/file")
+
+# TODO: Zapisywanie plików klasa.json z informacjami o zastępstwie (w przypadku braku informacji usunięcie pliku)
+# TODO: Serwer HTTPS (wyrobienie certyfikatu + integracja z aplikacją)
