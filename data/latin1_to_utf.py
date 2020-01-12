@@ -19,16 +19,14 @@ unused_words = ("<tr>",
                 "uwagi",
                 "class")
 
-
 def repair_line(line):
-    keys = ["ą", "ę", "ź", "ś", "ł", "ł", "ń"]
-    values = ["±", "ê", "¼", "¶", "³", "£", "ñ"]
-    for number in range(0, 6):
-        new_line = line.replace(values[number], keys[number])
+    utf8 = ("ą", "ę", "ź", "ś", "ł", "ł", "ń", "ż")
+    latin1 = ("±", "ê", "¼", "¶", "³", "£", "ñ", "¿")
+    for number in range(0, 8):
+        new_line = line.replace(latin1[number], utf8[number])
         if new_line != line:
             line = repair_line(new_line)
     return line
-
 
 def file_converter(path_to_file):
     new_file = []
