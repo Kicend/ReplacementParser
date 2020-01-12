@@ -1,7 +1,7 @@
 import requests as r
 import os
 from bs4 import BeautifulSoup
-from data.latin1_to_utf import file_converter
+from data.latin1_to_utf8 import file_converter
 
 class_list = ("1pla",
               "1plb",
@@ -72,8 +72,6 @@ if __name__ == "__main__":
     with open("parser_files/file.txt", "w") as f:
         for link in links:
             f.writelines(str(link))
-
-    # Wczytanie zawartości pliku po parsowaniu, i zapisanie go do innego pliku po konwersji
     file_converter("parser_files/file")
     sorter.file_filter()
 
