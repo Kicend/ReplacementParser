@@ -64,6 +64,12 @@ class Sorter:
                 utf8.writelines(element)
 
 if __name__ == "__main__":
+    try:
+        with open("config/class_list.txt", "r") as f_class:
+            class_list = f_class.readlines()
+    except FileNotFoundError:
+        with open("config/class_list.txt", "a"):
+            pass
     page = r.get("http://zastepstwa.staff.edu.pl/", headers=headers)
     soup = BeautifulSoup(page.text, "lxml")
     links = soup.find_all("tr")
