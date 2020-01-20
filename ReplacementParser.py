@@ -42,6 +42,13 @@ headers = {"user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleW
 class Sorter:
     def __init__(self, path_to_file: str):
         self.path = path_to_file
+        self.mode = 0
+        self.skip = False
+        self.cache = []
+
+    def main(self):
+        self.file_filter()
+        self.prepare_file()
 
     def file_filter(self):
         with open(self.path, "r") as utf8:
@@ -63,6 +70,22 @@ class Sorter:
             for element in file_list:
                 utf8.writelines(element)
 
+    def prepare_file(self):
+        with open(self.path, "r") as file:
+            file_list = file.readlines()
+            for number, element in enumerate(file_list):
+                if self.skip:
+                    self.skip = False
+                    continue
+                if len(element) == 2:
+                    file_list.insert(number, "*")
+                    self.skip = True
+        with open(self.path, "w") as file:
+            for element in file_list:
+                file.writelines(element)
+        if file_list[1].count("-"):
+            self.mode = 1
+
 if __name__ == "__main__":
     try:
         with open("config/class_list.txt", "r") as f_class:
@@ -79,7 +102,7 @@ if __name__ == "__main__":
         for link in links:
             f.writelines(str(link))
     file_converter("parser_files/file")
-    sorter.file_filter()
+    sorter.main()
 
 # TODO: Zapisywanie plików klasa.json z informacjami o zastępstwie (w przypadku braku informacji usunięcie pliku)
 # TODO: Serwer HTTPS (wyrobienie certyfikatu + integracja z aplikacją)
