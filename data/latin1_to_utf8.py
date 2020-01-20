@@ -38,7 +38,7 @@ def file_converter(path_to_file):
     with open("{}_utf-8.txt".format(path_to_file), "w") as f:
         for line in new_file:
             for number, word in enumerate(unused_words):
-                if line.count(word):
+                if line.count(word) and not line.count("colspan"):
                     break
                 else:
                     if number == 9:
