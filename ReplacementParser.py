@@ -90,24 +90,27 @@ class Sorter:
         self.cache = file_list.copy()
 
     def class_files(self):
-        date_line = self.cache[1]
-        date = ""
-        counter = 0
-        i = 0
-        for char in date_line:
-            for number in range(0, 10):
-                if char == str(number):
-                    date = date + char
-                    counter += 1
-                    if counter == 2 and i != 2:
-                        date = date + "."
-                        counter = 0
-                        i += 1
+        if self.mode == 0:
+            date_line = self.cache[1]
+            date = ""
+            counter = 0
+            i = 0
+            for char in date_line:
+                for number in range(0, 10):
+                    if char == str(number):
+                        date = date + char
+                        counter += 1
+                        if counter == 2 and i != 2:
+                            date = date + "."
+                            counter = 0
+                            i += 1
+            os.mkdir("class_files/{}".format(date))
 
-        os.mkdir("class_files/{}".format(date))
         with open("config/class_list.txt", "r") as class_f:
             self.class_cache = class_f.readlines()
         for element in self.cache:
+            if element.startswith("*") or element.startswith("<"):
+                continue
             for class_name in self.class_cache:
                 for char in element:
                     pass
