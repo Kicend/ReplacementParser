@@ -45,10 +45,12 @@ class Sorter:
         self.mode = 0
         self.skip = False
         self.cache = []
+        self.class_cache = []
 
     def main(self):
         self.file_filter()
         self.prepare_file()
+        self.class_files()
 
     def file_filter(self):
         with open(self.path, "r") as utf8:
@@ -85,6 +87,30 @@ class Sorter:
                 file.writelines(element)
         if file_list[1].count("-"):
             self.mode = 1
+        self.cache = file_list.copy()
+
+    def class_files(self):
+        date_line = self.cache[1]
+        date = ""
+        counter = 0
+        i = 0
+        for char in date_line:
+            for number in range(0, 10):
+                if char == str(number):
+                    date = date + char
+                    counter += 1
+                    if counter == 2 and i != 2:
+                        date = date + "."
+                        counter = 0
+                        i += 1
+
+        os.mkdir("class_files/{}".format(date))
+        with open("config/class_list.txt", "r") as class_f:
+            self.class_cache = class_f.readlines()
+        for element in self.cache:
+            for class_name in self.class_cache:
+                for char in element:
+                    pass
 
 if __name__ == "__main__":
     try:
