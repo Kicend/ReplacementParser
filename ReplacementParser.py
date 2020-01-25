@@ -1,7 +1,10 @@
 import requests as r
 import os
+import json
 from bs4 import BeautifulSoup
 from data.latin1_to_utf8 import file_converter
+
+cache = {}
 
 class_list = ("1pla",
               "1plb",
@@ -90,7 +93,6 @@ class Sorter:
         self.cache = file_list.copy()
 
     def class_files(self):
-        class_replacement = {}
         counter = 0
         if self.mode == 0:
             date_line = self.cache[1]
@@ -110,11 +112,12 @@ class Sorter:
         with open("config/class_list.txt", "r") as class_f:
             self.class_cache = class_f.readlines()
         for class_name in self.class_cache:
+            class_replacement = {}
             for i, element in enumerate(self.cache):
                 if element.count("/") == 1 and self.mode == 1:
+                    date = ""
                     if self.mode == 1:
                         date_line = self.cache[i]
-                        date = ""
                         dot = 0
                         for char in date_line:
                             for date_number in range(0, 10):
@@ -126,6 +129,11 @@ class Sorter:
                                         counter = 0
                                         dot += 1
                         counter = 0
+                        if len(cache) == 0:
+                            cache["old_date"] = date
+                        else:
+                            if date != cache["old_date"]:
+                                cache["new_date"] = date
                 else:
                     if element.startswith("*"):
                         info_index_start = i + 1
@@ -155,7 +163,21 @@ class Sorter:
                                 content = self.cache[cycle-1]
                                 replacement_content = replacement_content + content
                                 break
-                        print(replacement_content)
+                        if replacement_content.count(class_name[:-1]):
+                            if replacement_content.count("("):
+                                group_number = replacement_content[replacement_content.index("(") + 1]
+                                lesson_number = lesson_number + "_" + group_number
+                            class_replacement[lesson_number] = replacement_content
+                            if cache["new_date"] != cache["old_date"]:
+                                try:
+                                    if cache["old_date"] not in os.listdir("class_files"):
+                                        os.mkdir("class_files/{}".format(cache["old_date"]))
+                                except FileExistsError:
+                                    pass
+                                with open("class_files/{}/{}.json".format(cache["old_date"], class_name[:-1]), "a") \
+                                        as class_file:
+                                    json.dump(class_replacement, class_file, indent=4)
+                                cache["old_date"] = cache["new_date"]
 
 if __name__ == "__main__":
     try:
