@@ -90,10 +90,11 @@ class Sorter:
         self.cache = file_list.copy()
 
     def class_files(self):
+        class_replacement = {}
+        counter = 0
         if self.mode == 0:
             date_line = self.cache[1]
             date = ""
-            counter = 0
             i = 0
             for char in date_line:
                 for number in range(0, 10):
@@ -108,12 +109,53 @@ class Sorter:
 
         with open("config/class_list.txt", "r") as class_f:
             self.class_cache = class_f.readlines()
-        for element in self.cache:
-            if element.startswith("*") or element.startswith("<"):
-                continue
-            for class_name in self.class_cache:
-                for char in element:
-                    pass
+        for class_name in self.class_cache:
+            for i, element in enumerate(self.cache):
+                if element.count("/") == 1 and self.mode == 1:
+                    if self.mode == 1:
+                        date_line = self.cache[i]
+                        date = ""
+                        dot = 0
+                        for char in date_line:
+                            for date_number in range(0, 10):
+                                if char == str(date_number):
+                                    date = date + char
+                                    counter += 1
+                                    if counter == 2 and dot != 2:
+                                        date = date + "."
+                                        counter = 0
+                                        dot += 1
+                        counter = 0
+                else:
+                    if element.startswith("*"):
+                        info_index_start = i + 1
+                        lesson_number = self.cache[info_index_start]
+                        lesson_number = lesson_number[0:-1]
+                        info_index_end = 0
+                        cycle = info_index_start + 1
+                        while True:
+                            try:
+                                if self.cache[cycle].startswith("*"):
+                                    info_index_end = cycle
+                                    break
+                                elif self.cache[cycle].startswith("<"):
+                                    info_index_end = cycle
+                                    break
+                                cycle += 1
+                            except IndexError:
+                                break
+                        cycle = info_index_start + 1
+                        replacement_content = ""
+                        while cycle != info_index_end:
+                            try:
+                                content = self.cache[cycle]
+                                replacement_content = replacement_content + content
+                                cycle += 1
+                            except IndexError:
+                                content = self.cache[cycle-1]
+                                replacement_content = replacement_content + content
+                                break
+                        print(replacement_content)
 
 if __name__ == "__main__":
     try:
