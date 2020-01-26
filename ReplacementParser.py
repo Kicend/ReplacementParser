@@ -175,15 +175,17 @@ class Sorter:
                                         os.mkdir("class_files/{}".format(cache["old_date"]))
                                 except FileExistsError:
                                     pass
-                                with open("class_files/{}/{}.json".format(cache["old_date"], class_name[:-1]), "w") \
+                                with open("class_files/{}/{}.json".format(cache["old_date"], class_name[:-1]), "w",
+                                          encoding="utf8") \
                                         as class_file:
-                                    json.dump(class_replacement, class_file, indent=4)
+                                    json.dump(class_replacement, class_file, indent=4, ensure_ascii=False)
                                 cache["old_date"] = cache["new_date"]
                             else:
                                 if self.mode == 0:
-                                    with open("class_files/{}/{}.json".format(cache["date"], class_name[:-1]), "w") \
+                                    with open("class_files/{}/{}.json".format(cache["date"], class_name[:-1]), "w",
+                                              encoding="utf8") \
                                             as class_file:
-                                        json.dump(class_replacement, class_file, indent=4)
+                                        json.dump(class_replacement, class_file, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
     try:
