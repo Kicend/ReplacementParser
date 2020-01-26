@@ -107,6 +107,7 @@ class Sorter:
                             date = date + "."
                             counter = 0
                             i += 1
+            cache["date"] = date
             os.mkdir("class_files/{}".format(date))
 
         with open("config/class_list.txt", "r") as class_f:
@@ -174,10 +175,15 @@ class Sorter:
                                         os.mkdir("class_files/{}".format(cache["old_date"]))
                                 except FileExistsError:
                                     pass
-                                with open("class_files/{}/{}.json".format(cache["old_date"], class_name[:-1]), "a") \
+                                with open("class_files/{}/{}.json".format(cache["old_date"], class_name[:-1]), "w") \
                                         as class_file:
                                     json.dump(class_replacement, class_file, indent=4)
                                 cache["old_date"] = cache["new_date"]
+                            else:
+                                if self.mode == 0:
+                                    with open("class_files/{}/{}.json".format(cache["date"], class_name[:-1]), "w") \
+                                            as class_file:
+                                        json.dump(class_replacement, class_file, indent=4)
 
 if __name__ == "__main__":
     try:
