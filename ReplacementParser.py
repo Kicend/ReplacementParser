@@ -108,7 +108,12 @@ class Sorter:
                             counter = 0
                             i += 1
             cache["date"] = date
-            os.mkdir("class_files/{}".format(date))
+            cache["old_date"] = 1
+            cache['new_date'] = 1
+            try:
+                os.mkdir("class_files/{}".format(date))
+            except FileExistsError:
+                pass
 
         with open("config/class_list.txt", "r") as class_f:
             self.class_cache = class_f.readlines()
@@ -155,6 +160,7 @@ class Sorter:
                                 break
                         cycle = info_index_start + 1
                         replacement_content = ""
+                        alt_class_name = class_name[0] + " " + class_name[1:-1]
                         while cycle != info_index_end:
                             try:
                                 content = self.cache[cycle]
@@ -164,7 +170,7 @@ class Sorter:
                                 content = self.cache[cycle-1]
                                 replacement_content = replacement_content + content
                                 break
-                        if replacement_content.count(class_name[:-1]):
+                        if replacement_content.count(class_name[:-1]) or replacement_content.count(alt_class_name):
                             if replacement_content.count("("):
                                 group_number = replacement_content[replacement_content.index("(") + 1]
                                 lesson_number = lesson_number + "_" + group_number
