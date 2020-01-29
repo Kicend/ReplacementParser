@@ -175,6 +175,8 @@ class Sorter:
                             if replacement_content.count("("):
                                 group_number = replacement_content[replacement_content.index("(") + 1]
                                 lesson_number = lesson_number + "_" + group_number
+                            dash_index = replacement_content.index("-")
+                            replacement_content = replacement_content[dash_index+2:]
                             class_replacement[lesson_number] = replacement_content
                             if cache["new_date"] != cache["old_date"]:
                                 try:
