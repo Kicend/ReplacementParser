@@ -3,6 +3,7 @@ import os
 import json
 from bs4 import BeautifulSoup
 from data.latin1_to_utf8 import file_converter
+from data.cleanup import delete_unused_dirs
 
 cache = {}
 
@@ -194,6 +195,7 @@ class Sorter:
                                         json.dump(class_replacement, class_file, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
+    delete_unused_dirs()
     try:
         with open("config/class_list.txt", "r") as f_class:
             class_list = f_class.readlines()
