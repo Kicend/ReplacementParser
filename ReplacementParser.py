@@ -214,6 +214,3 @@ if __name__ == "__main__":
             f.writelines(str(link))
     file_converter("parser_files/file")
     sorter.main()
-
-# TODO: Zapisywanie plików klasa.json z informacjami o zastępstwie (w przypadku braku informacji usunięcie pliku)
-# TODO: Serwer HTTPS (wyrobienie certyfikatu + integracja z aplikacją)
