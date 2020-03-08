@@ -4,41 +4,9 @@ import json
 from bs4 import BeautifulSoup
 from data.latin1_to_utf8 import file_converter
 from data.cleanup import delete_unused_dirs
+from data.get_class_names import get_class_list
 
 cache = {}
-
-class_list = ("1pla",
-              "1plb",
-              "1plc",
-              "1pta",
-              "1ptb",
-              "1ptm",
-              "1gta",
-              "1gtb",
-              "1gm1",
-              "1gm2",
-              "1gla",
-              "1glb",
-              "2la",
-              "2lb",
-              "2ta",
-              "2tb",
-              "2tc",
-              "2tm1",
-              "2tm2",
-              "3la",
-              "3lb",
-              "3ta",
-              "3tb",
-              "3tc",
-              "3tm1",
-              "3tm2",
-              "4ta",
-              "4tb",
-              "4tc",
-              "4tm1",
-              "4tm2",
-              "4tm3")
 
 headers = {"user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) "
                          "Version/9.0.2 Safari/601.3.9"}
@@ -197,6 +165,8 @@ class Sorter:
                                         json.dump(class_replacement, class_file, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
+    os.makedirs("config", exist_ok=True)
+    os.makedirs("class_files", exist_ok=True)
     delete_unused_dirs()
     try:
         with open("config/class_list.txt", "r") as f_class:
@@ -213,4 +183,5 @@ if __name__ == "__main__":
         for link in links:
             f.writelines(str(link))
     file_converter("parser_files/file")
+    get_class_list()
     sorter.main()
