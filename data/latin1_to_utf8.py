@@ -1,11 +1,12 @@
 # Słownik tylko do reprezentacji "graficznej" liter UTF-8 do latin1
 characters_dict = {
-    "ą": "±",
-    "ę": "ê",
+    "ą": ("±", "Ä"),
+    "ę": ("ê", "Ä"),
     "ź": "¼",
-    "ś": "¶",
-    "ł": ("³", "£"),
-    "ń": "ñ"
+    "ś": ("¶", "Å"),
+    "ł": ("³", "£", "Å"),
+    "ń": "ñ",
+    "ż": "¿"
 }
 
 unused_words = ("<tr>",
@@ -20,9 +21,9 @@ unused_words = ("<tr>",
                 "class")
 
 def repair_line(line):
-    utf8 = ("ą", "ę", "ź", "ś", "ł", "ł", "ń", "ż")
-    latin1 = ("±", "ê", "¼", "¶", "³", "£", "ñ", "¿")
-    for number in range(0, 8):
+    utf8 = ("ą", "ą", "ę", "ę", "ź", "ś", "ś", "ł", "ł", "ł", "ń", "ż")
+    latin1 = ("±", "Ä", "ê", "Ä", "¼", "¶", "Å", "³", "£", "Å", "ñ", "¿")
+    for number in range(0, 11):
         new_line = line.replace(latin1[number], utf8[number])
         if new_line != line:
             line = repair_line(new_line)
