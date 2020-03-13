@@ -4,7 +4,8 @@ import json
 from bs4 import BeautifulSoup
 from data.latin1_to_utf8 import file_converter
 from data.cleanup import delete_unused_dirs
-from data.get_class_names import get_class_list
+from data.get_info import get_class_list, get_teachers_list
+from data.json_parser import json_final_shape
 
 cache = {}
 
@@ -184,4 +185,6 @@ if __name__ == "__main__":
             f.writelines(str(link))
     file_converter("parser_files/file")
     get_class_list()
+    get_teachers_list()
     sorter.main()
+    json_final_shape()
