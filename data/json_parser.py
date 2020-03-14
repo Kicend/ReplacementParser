@@ -19,7 +19,7 @@ def json_final_shape():
                         replacement_subdict = {"Lesson": key}
                     replacement_content = str(dictionary[key])
                     if replacement_content.count("\n") == 1:
-                        replacement_subdict["Description"] = dictionary[key]
+                        replacement_subdict["Description"] = dictionary[key][:-1]
                         replacement_list_final.append(replacement_subdict)
                     elif replacement_content.count("\n") == 2:
                         new_line_char_index = replacement_content.index("\n")
