@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 import requests as r
 import os
 import json
